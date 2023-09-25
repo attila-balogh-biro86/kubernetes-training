@@ -1,0 +1,67 @@
+# Install Kubernetes Dashboar UI
+# Ref.: https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+# Ref.: https://github.com/kubernetes/dashboard
+
+
+# Install
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.0/aio/deploy/recommended.yaml
+
+# Creating ServiceAccount (admin-user) and ClusterRoleBinding
+# Manifest file:
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+
+# Apply it:
+kubectl apply -f dashboard-sa-crb.yaml
+
+
+# Get the bearer token
+kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
+
+
+# Accessing Dashboard
+# Ref.: https://github.com/kubernetes/dashboard/blob/master/docs/user/accessing-dashboard/README.md
+
+# 1) Use command line proxy
+kubectl proxy
+
+# URL: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+
+# 2) NodePort
+# Edit kubernetes-dashboard service:
+kubectl -n kubernetes-dashboard edit service kubernetes-dashboard
+# Change type: ClusterIP to type: NodePort
+
+# Get the port number:
+kubectl -n kubernetes-dashboard get service kubernetes-dashboard
+
+# Change PORT to the port number
+URL: https://master.corp.local:PORT
+
+
+# Optional: Port forward on controler (CentOS)
+# Change PORT to the port number
+firewall-cmd --zone external --permanent --add-forward-port port=443:proto=tcp:toport=PORT:toaddr=192.168.70.80
+firewall-cmd --reload
+
+
+
+

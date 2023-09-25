@@ -56,7 +56,7 @@ kubectl -n kubernetes-dashboard edit service kubernetes-dashboard
 kubectl -n kubernetes-dashboard get service kubernetes-dashboard
 
 # Change PORT to the port number
-URL: https://master.corp.local:PORT
+URL: https://master-node:PORT
 
 
 # Optional: Port forward on controler (CentOS)

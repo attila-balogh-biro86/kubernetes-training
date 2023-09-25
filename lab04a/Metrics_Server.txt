@@ -1,0 +1,28 @@
+# Install Metrics server
+# Ref.: https://github.com/kubernetes-sigs/metrics-server
+
+
+# Download manifest file:
+wget -O metrics-server.yaml https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Disable certificate validation by editing the manifest file
+# Deployment/containers/args:
+--kubelet-insecure-tls
+
+
+# Install
+kubectl apply -f metrics-server.yaml
+
+
+# Retrieves metrics
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes/node1 | jq
+
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/namespaces/default/pods | jq
+
+
+# View metrics with kubectl top
+kubectl top node
+
+kubectl top pod
+
+

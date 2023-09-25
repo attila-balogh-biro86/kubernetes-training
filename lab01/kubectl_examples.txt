@@ -1,0 +1,70 @@
+# kubectl examples
+
+
+kubectl | more
+
+kubectl completion --help
+
+kubectl get TAB TAB
+
+# List API resources
+kubectl api-resources
+
+# List cluster nodes
+kubectl get nodes
+
+# Get PODs
+kubectl get pods --all-namespaces
+kubectl get pods --all-namespaces --show-labels
+kubectl get pods --all-namespaces --show-labels -L k8s-app
+kubectl get pods --all-namespaces --show-labels -L k8s-app -l k8s-app
+kubectl get pods --all-namespaces --show-labels -L k8s-app -l k8s-app=kube-proxy
+
+kubectl get pods -n kube-system kube-proxy-xxxx --output=yaml
+
+# Wide option
+kubectl get pods -o wide
+
+# Create subcommand
+kubectl create --help
+
+kubectl create namespaces myspace --dry-run -o yaml
+kubectl create namespaces myspace --dry-run -o yaml > myspace.yaml
+
+# Run a POD (NGINX)
+kubectl run nginx --image=nginx --port=80 --expose 
+kubectl run nginx --image=nginx --port=80 --expose --dry-run -o yaml
+
+# Run (exec) a bash in the container
+kubectl exec -it nginx -- bash
+
+kubectl get pods -n kube-system kube-proxy-xxxx --output=yaml | wc -l
+kubectl get pods -n kube-system kube-proxy-xxxx --output=yaml --export | wc -l
+kubectl create -f DIRECTORY_NAME
+
+# Get information (explain)
+kubectl explain -h | more
+kubectl explain pod
+kubectl explain pod.spec.containers.resources
+kubectl explain pod.spec.containers --recursive
+
+# Deployment
+kubectl create deployment nginx --image=nginx
+kubectl get deployments
+
+# Limit resources
+kubectl set resources deployment nginx --requests=cpu=0.25
+
+# Scale
+kubectl scale --replicas=3 deployment nginx
+kubectl edit deployments nginx
+kubectl get deployments nginx -o yaml --export > deployment-exported.yaml
+vi deployment-exported.yaml
+kubectl replace -f deployment-exported.yaml
+kubectl set image deployment nginx nginx=nginx:1.13
+kubectl replace -f deployment-exported.yaml
+
+# Rollback
+kubectl rollout undo deployment nginx
+
+
