@@ -36,5 +36,14 @@ ansible       ALL=(ALL)       NOPASSWD: ALL
 9.4 ssh worker1-node 
 
 
-// Create simple inventory as ansible user on the MASTER node
-10. vim /home/ansible/inventory
+// Edit the default inventory file on the MASTER node
+10.1 Extend the default inventory file with your worker1 node
+under /etc/ansible/hosts file
+[kubernetes]
+worker1-node
+
+// Create a simple playbook
+11.1 vim /home/ansible/install_git_via_ansible.yml
+11.2 Copy the content of this file: install_git_via_ansible.yml
+11.3 ansible-playbook -i /home/ansible/inventory /home/ansible/git-setup.yml
+
