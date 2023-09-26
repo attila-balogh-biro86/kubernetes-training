@@ -1,0 +1,50 @@
+
+
+//  Install python3 and pip3 and download Kubespray GIT repo
+1.1 sudo apt update
+1.2 sudo apt install git python3 python3-pip -y
+1.3 git clone https://github.com/kubernetes-incubator/kubespray.git
+1.4 cd kubespray
+1.5 pip install -r requirements.txt
+
+
+// Check Ansible version
+2. ansible --version
+
+
+// Create Ansibile inventory file (you have to be in the KubeSpray directory)
+3.1 cp -rfp inventory/sample inventory/mycluster
+3.2 declare -a IPS=(MASTER_IP MASTER2_IP NODE1_IP NODE2_IP)
+3.3 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+
+// Check the host distribution
+3.4 vim inventory/mycluster/hosts.yaml
+
+
+// Optional
+kube_version: v1.26.2
+kube_network_plugin: calico
+kube_pods_subnet: 10.233.64.0/18
+kube_service_addresses: 10.233.0.0/18
+cluster_name: cluster.local
+//
+
+4. Review and modify the following parameters in file “inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml”.
+
+
+5. Review and select addons to install in file "inventory/mycluster/group_vars/k8s_cluster/addons.yml"
+
+
+// Enable IP forwarding and disable swap
+6.1 ansible all -i inventory/mycluster/hosts.yaml -m shell -a "echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf"
+6.2 ansible all -i inventory/mycluster/hosts.yaml -m shell -a "sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab && sudo swapoff -a"
+
+
+// Start the installation
+7. ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root cluster.yml
+
+
+// After the successfully installation check the cluster
+8.1 sudo su -
+8.2 kubectl get nodes
+8.3 kubectl get pods -A
