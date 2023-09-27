@@ -1,6 +1,6 @@
 
 // Login to the master node as cloud_user
-1. ssh cloud_user@<PUBLIC IP> of the MASTER node
+1. ssh cloud_user@<PUBLIC IP> of the ANSIBLE node
 
 // Add Ansible official repository reference to the repository list
 2. sudo add-apt-repository ppa:ansible/ansible
@@ -16,11 +16,11 @@
 5.1 sudo apt install python3-argcomplete
 5.2 sudo activate-global-python-argcomplete3
 
-// Create ansible user on the MASTER node
+// Create ansible user on the ANSIBLE node
 6. sudo adduser ansible
 
-// SSH to worker1-node with cloud_user
-7.1 ssh cloud_user@worker1-node
+// SSH to worker-node with cloud_user
+7.1 ssh cloud_user@worker
 7.2 sudo adduser ansible
 7.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
 7.4 sudo visudo
@@ -28,22 +28,34 @@ Add this line at the end of the file:
 ansible       ALL=(ALL)       NOPASSWD: ALL
 7.5 logout
 
-// Login to the MASTER node as ansible
+// SSH to master with cloud_user
+7.1 ssh cloud_user@master
+7.2 sudo adduser ansible
+7.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
+7.4 sudo visudo
+Add this line at the end of the file:
+ansible       ALL=(ALL)       NOPASSWD: ALL
+7.5 logout
+
+// Login to the ANSIBLE node as ansible
 9.1 sudo su - ansible
 9.2 ssh-keygen (Use the default values when prompt asks..)
-9.3 ssh-copy-id worker1-node
+9.3 ssh-copy-id worker
+9.4 ssh-copy-id master
 // You should be able to ssh without password
-9.4 ssh worker1-node 
+9.5 ssh worker
+9.6 ssh master
 
 
-// Edit the default inventory file on the MASTER node
+// Edit the default inventory file on the ANSIBLE node
 10.1 Extend the default inventory file with your worker1 node
 under /etc/ansible/hosts file
 [kubernetes]
-worker1-node
+worker
+master
 
 // Create a simple playbook
 11.1 vim /home/ansible/install_git_via_ansible.yml
 11.2 Copy the content of this file: install_git_via_ansible.yml
-11.3 ansible-playbook -i /home/ansible/inventory /home/ansible/git-setup.yml
+11.3 ansible-playbook  /home/ansible/${PLAYBOOK_YAML_NAME}
 
