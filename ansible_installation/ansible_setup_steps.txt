@@ -48,8 +48,9 @@ ansible       ALL=(ALL)       NOPASSWD: ALL
 
 
 // Edit the default inventory file on the ANSIBLE node
-10.1 Extend the default inventory file with your worker1 node
-under /etc/ansible/hosts file
+//Extend the default inventory file with your worker1 node under /etc/ansible/hosts file
+10.1 cp /etc/ansible/hosts /home/ansible/inventory
+10.2 Add those lines as the end of the file:
 [kubernetes]
 worker
 master
@@ -57,5 +58,5 @@ master
 // Create a simple playbook
 11.1 vim /home/ansible/install_git_via_ansible.yml
 11.2 Copy the content of this file: install_git_via_ansible.yml
-11.3 ansible-playbook -i /home/ansible/inventory /home/ansible/git-setup.yml
+11.3 ansible-playbook -i /home/ansible/inventory /home/ansible/install_git_via_ansible.yml
 
