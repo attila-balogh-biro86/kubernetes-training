@@ -16,7 +16,7 @@
 5.1 sudo apt install python3-argcomplete
 5.2 sudo activate-global-python-argcomplete3
 
-// Create ansible user on the MASTER node
+// Create ansible user on the ANSIBLE node
 6. sudo adduser ansible
 
 // SSH to worker-node with cloud_user
