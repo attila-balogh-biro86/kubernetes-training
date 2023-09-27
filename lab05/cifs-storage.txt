@@ -1,0 +1,30 @@
+# CIFS storage
+# Ref.: https://github.com/kubernetes-csi/csi-driver-smb
+
+# CIFS server data:
+# Server name: 4.234.121.184
+# Share name: sambashare
+# Username: cloud_user
+# Password: Clouduser2023
+
+
+# Install  v1.1.0 with helm
+helm repo add csi-driver-smb https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+helm install csi-driver-smb csi-driver-smb/csi-driver-smb --namespace kube-system --version v1.12.0
+
+# Check pods status
+kubectl -n kube-system get pod -o wide -l app=csi-smb-controller
+kubectl -n kube-system get pod -o wide -l app=csi-smb-node
+
+# Create secret (username and password)
+kubectl create secret generic smbcreds --from-literal username=cloud_user --from-literal password="Clouduser2023"
+
+# Create PersistentVolume
+kubectl create -f cifs-csi-pv.yaml
+
+# Create PersistentVolumeClaim
+kubectl create -f myapp-cifs-csi-pvc.yaml
+
+# Create Deployment and Service
+kubectl create -f myapp-cifs-csi-deployment.yaml
+kubectl create -f myapp-service.yaml
