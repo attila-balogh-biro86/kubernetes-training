@@ -13,3 +13,6 @@ PAUNOV.Yavor - 20.68.148.236
 STANEI.Daniel - 20.108.5.47
 SZALAI.Robert - 20.108.54.22
 Yannick.DURAND - 20.117.72.35
+
+
+USERNAME/PASS on EVERY NODE: cloud_user/Clouduser2023
