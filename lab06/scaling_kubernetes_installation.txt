@@ -1,0 +1,54 @@
+
+
+
+Log into the ansible host with user CLOUD_USER
+// SSH to worker2 with cloud_user
+1.1 ssh cloud_user@worker2
+1.2 sudo adduser ansible
+1.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
+1.4 sudo visudo
+Add this line at the end of the file:
+ansible       ALL=(ALL)       NOPASSWD: ALL
+1.5 logout
+
+// Login to the ANSIBLE node as ansible
+2.1 sudo su - ansible
+2.2 ssh-copy-id worker2
+// You should be able to ssh without password
+2.3 ssh worker2
+
+
+// Log into the ansible host with user ANSIBLE USER
+
+3.1 cd /home/ansible/kubespray
+
+// Gather facts about the cluster (update the inventory)
+3.2 ansible-playbook -i inventory/mycluster/hosts.yaml playbooks/facts.yml
+
+// Install the cluster playbook to update the cluster
+3.3 ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root cluster.yml
+
+
+4.1 log into the master node and check with kubectl the new node: kubectl get nodes
+
+
+------------------------------------------------------
+REMOVE node from the cluster
+
+5.1 ansible-playbook -i inventory/mycluster/hosts.yaml playbooks/remove_node.yml -b -e node=node3 -e reset_nodes=false -e allow_ungraceful_removal=true
+
+5.2 Remove that host info from the inventory file. (inventory/mycluster/hosts.yaml)
+
+
+------------------------------------------------------
+RESET the cluster
+
+DO NOT DO THIS STEP, JUST FOR INFORMATION:
+
+# Clean up old Kubernetes cluster with Ansible Playbook - run the playbook as root
+# The option `--become` is required, as for example cleaning up SSL keys in /etc/,
+# uninstalling old packages and interacting with various systemd daemons.
+# Without --become the playbook will fail to run!
+# And be mind it will remove the current kubernetes cluster (if it's running)!
+
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root playbooks/reset.yml

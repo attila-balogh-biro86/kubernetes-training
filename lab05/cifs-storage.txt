@@ -48,6 +48,6 @@ kubectl delete svc $(serviceName)
 kubectl delete pvc $(pvcName)
 
 // Release claim from pv
-kubectl patch pv cifs-csi-pv -p '{"spec":{"claim":"null"}}'
+kubectl patch pv pv-test -p '{"spec":{"claimRef": null}}'
 
 Then execute the deployment again
