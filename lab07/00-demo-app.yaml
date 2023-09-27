@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend-container
-        image: docker.io/byrnedo/alpine-curl:0.1.8
+        image: byrnedo/alpine-curl:latest
         imagePullPolicy: IfNotPresent
         command: [ "/bin/ash", "-c", "sleep 1000000000" ]
 ---
@@ -44,7 +44,7 @@ spec:
           value: "8080"
         ports:
         - containerPort: 8080
-        image: docker.io/cilium/json-mock:1.2
+        image: cilium/json-mock:latest
         imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
@@ -55,8 +55,8 @@ metadata:
     app: backend
 spec:
   type: ClusterIP
+  ports:
+    - targetPort: 8080
+      port: 80
   selector:
     app: backend
-  ports:
-  - name: http
-    port: 8080
