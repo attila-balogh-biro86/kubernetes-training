@@ -32,5 +32,5 @@ kubectl create -f cifs-csi-pv.yaml
 kubectl create -f myapp-cifs-csi-pvc.yaml
 
 # Create Deployment and Service
-kubectl create -f myapp-cifs-csi-deployment.yaml
+kubectl create -f deployment-definition-cifs-csi-pvc.yaml
 kubectl create -f myapp-service.yaml
