@@ -34,3 +34,20 @@ kubectl create -f myapp-cifs-csi-pvc.yaml
 # Create Deployment and Service
 kubectl create -f deployment-definition-cifs-csi-pvc.yaml
 kubectl create -f myapp-service.yaml
+
+
+# Test the share
+kubectl exec -it $(podName) -- ls /usr/share/nginx/html
+kubectl exec -it $(podName) -- touch /usr/share/nginx/html/test.html
+
+-----------------
+Delete and reclaim the PV
+
+kubectl delete deployment $(deploymentName)
+kubectl delete svc $(serviceName)
+kubectl delete pvc $(pvcName)
+
+// Release claim from pv
+kubectl patch pv cifs-csi-pv -p '{"spec":{"claim":"null"}}'
+
+Then execute the deployment again
