@@ -1,0 +1,63 @@
+# Krew (plugin manager for kubectl command-line tool)
+# Ref.: https://github.com/kubernetes-sigs/krew
+
+# Install Krew
+# Ref.: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+
+
+# Install git if not already installed
+# On RedHat/CentOS
+yum install git
+# On Debian/Ubuntu
+apt install git
+
+
+# Install krew
+(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+
+
+
+# Add to .bashrc
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# Source .bachrc
+. ~/.bashrc
+
+
+# List commands
+kubectl krew
+
+# Update
+kubectl krew update
+
+# Search
+kubectl krew search
+kubectl krew search nginx
+
+
+# Install plugin
+kubectl krew install ingress-nginx
+kubectl krew install node-shell
+
+# List plugins
+kubectl plugin list
+
+
+# Usage: ingress-nginx
+kubectl ingress-nginx
+
+kubectl ingress-nginx --namespace ingress-nginx info
+kubectl ingress-nginx --namespace ingress-nginx logs
+
+
+# Usage: node-shell (works only from master node)
+kubectl get node-shell
+kubectl node-shell node1
