@@ -1,0 +1,20 @@
+kubectl delete -f secret.yaml
+kubectl delete -f mongo-deployment.yaml
+
+kubectl create -f secret.yaml
+kubectl create -f mongo-deployment.yaml
+
+### travel-agency-service
+kubectl delete -f travel-agency-deployment.yaml
+kubectl create -f travel-agency-deployment.yaml
+
+
+### client-service
+kubectl delete configmap client-service
+kubectl delete -f client-service-deployment.yaml
+
+kubectl create -f client-config.yaml
+kubectl create -f client-service-deployment.yaml
+
+# Check that the pods are running
+kubectl get pods
