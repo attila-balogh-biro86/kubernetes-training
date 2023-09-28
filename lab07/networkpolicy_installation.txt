@@ -1,0 +1,61 @@
+// Install the demo application
+1. kubectl create -f demo-app.yaml
+
+// Check the pods to make sure they are running
+2. kubectl get pods -o wide
+
+// Get the names of the pods
+3.1 FRONTEND=$(kubectl get pods -l app=frontend -o json | jq -r '.items[0].metadata.name')
+3.2 BACKEND_IP=$(kubectl get pods -l app=backend -o json | jq -r '.items[0].status.podIP')
+
+// Validate if frontend can communicate with backend
+4.1 kubectl exec -ti $FRONTEND -- curl -I $(BACKEND_IP):8080 | head -1
+
+//Putting a Pod into ingress default deny mode
+5.1 kubectl create -f 01-backend-ingress-deny.yaml
+
+5.2 Repeat the step 4.1 and notice that the frontend cannot communicate with the backend
+
+// Backend can still reach the internet
+5.3 kubectl exec -ti $BACKEND -- curl -I kubernetes.io | head -1
+
+// Allow frontend to reach the backend again
+5.4 kubectl apply -f 02-backend-ingress-allow-frontend.yaml
+
+// Test again
+5.5 Repeat the point 4.1 and notice that the frontend can communicate with the backend again
+
+------------------
+
+// Allow pod communication within the same namespace
+6.1 kubectl create -f 03-all-pods-allow-within-namespace.yaml
+
+// Delete the network policy which allows the frontend-backend communication
+6.2 kubectl delete networkpolicy backend-ingress-allow-frontend
+
+// Test it again, it should work
+6.3 kubectl exec -ti $FRONTEND -- curl -I $(podIPWithDashes).$(namespace).pod.cluster.local:8080 | head -1
+
+
+------------------
+
+// Allow pod communication across namespaces
+
+// Create monitoring namespace and label it
+7.1 kubectl create namespace monitoring
+7.2 kubectl label namespace monitoring type=monitoring
+
+// Deploy monitoring application
+7.3 kubectl create -n monitoring -f monitoring-app.yaml
+
+// Save the monitoring pod name
+7.4 MONITORING=$(kubectl -n monitoring get pods -l app=monitoring -o json | jq -r '.items[0].metadata.name')
+
+// Test the inter namespace connectivity, it should fail
+7.5 kubectl -n monitoring exec -ti $MONITORING -- curl -I --connect-timeout 5 backend.default.svc.cluster.local:8080 | head -1
+
+// Create network policy to allow communication from monitoring namespace to default namespace
+7.6 kubectl create -f 04-backend-ingress-allow-monitoring-namespace.yaml
+
+// Store the pod name of the monitoring pod
+7.7 Try the step 7.5 again, it should work now
