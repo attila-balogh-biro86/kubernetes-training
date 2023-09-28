@@ -33,7 +33,7 @@
 // Delete the network policy which allows the frontend-backend communication
 6.2 kubectl delete networkpolicy backend-ingress-allow-frontend
 
-// Test it again, it should work
+// Test it again, it should work 10-32-120-1.default.pod.cluster.local
 6.3 kubectl exec -ti $FRONTEND -- curl -I $(podIPWithDashes).$(namespace).pod.cluster.local:8080 | head -1
 
 

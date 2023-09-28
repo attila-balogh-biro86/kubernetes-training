@@ -59,5 +59,6 @@ kubectl ingress-nginx --namespace ingress-nginx logs
 
 
 # Usage: node-shell (works only from master node)
-kubectl get node-shell
 kubectl node-shell node1
+
+kubectl set-context kubernetes-admin@cluster.local

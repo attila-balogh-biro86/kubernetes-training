@@ -8,7 +8,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    nodePort: 30081
+    nodePort: 30051
   type: NodePort
 ---
 apiVersion: apps/v1
@@ -28,7 +28,7 @@ spec:
       containers:
         - name: travel-agency-service
           image: abaloghbiro/travel-agency-service:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8080
           env:
