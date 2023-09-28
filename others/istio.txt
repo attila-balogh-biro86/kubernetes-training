@@ -40,3 +40,10 @@ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 // Verify the connection and URL:
 
 echo "http://$GATEWAY_URL/productpage"
+
+
+------------
+
+//Install Kiali
+kubectl apply -f samples/addons
+kubectl rollout status deployment/kiali -n istio-system
