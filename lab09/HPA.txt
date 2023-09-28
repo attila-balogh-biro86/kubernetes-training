@@ -1,0 +1,26 @@
+# Horizontal Pod Autoscaler (HPA)
+# Ref.: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+
+
+# Create a deployment
+# Use example-deployment-definition-hpa.yaml file.
+kubectl create -f example-deployment-definition-hpa.yaml
+
+
+# Set autoscale by kubectl or use manifest file (example-hpa-definition.yaml)
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+
+
+# Generate load
+kubectl run -it --rm load-generator --image=busybox /bin/sh
+while true; do wget -q -O- http://192.168.70.81:30080; done
+
+
+# Get infos
+kubectl get hpa
+kubectl get pods
+kubectl top pod
+
+
+# Delete HPA
+kubectl delete horizontalpodautoscalers.autoscaling php-apache

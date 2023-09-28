@@ -43,9 +43,9 @@ kubectl exec -it $(podName) -- touch /usr/share/nginx/html/test.html
 -----------------
 Delete and reclaim the PV
 
+kubectl delete pvc $(pvcName)
 kubectl delete deployment $(deploymentName)
 kubectl delete svc $(serviceName)
-kubectl delete pvc $(pvcName)
 
 // Release claim from pv
 kubectl patch pv pv-test -p '{"spec":{"claimRef": null}}'

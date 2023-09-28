@@ -35,6 +35,8 @@ ansible       ALL=(ALL)       NOPASSWD: ALL
 ------------------------------------------------------
 REMOVE node from the cluster
 
+5.0 Step into the kubespray directory
+
 5.1 ansible-playbook -i inventory/mycluster/hosts.yaml playbooks/remove_node.yml -b -e node=node3 -e reset_nodes=false -e allow_ungraceful_removal=true
 
 5.2 Remove that host info from the inventory file. (inventory/mycluster/hosts.yaml)
