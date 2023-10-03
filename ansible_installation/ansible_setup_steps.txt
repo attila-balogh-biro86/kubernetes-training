@@ -22,7 +22,8 @@
 // SSH to worker-node with cloud_user
 7.1 ssh cloud_user@worker
 7.2 sudo adduser ansible
-7.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
+// adduser already request the passwd to be setup
+// 7.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
 7.4 sudo visudo
 Add this line at the end of the file:
 ansible       ALL=(ALL)       NOPASSWD: ALL
@@ -31,7 +32,8 @@ ansible       ALL=(ALL)       NOPASSWD: ALL
 // SSH to master with cloud_user
 7.1 ssh cloud_user@master
 7.2 sudo adduser ansible
-7.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
+// adduser already request the passwd to be setup
+// 7.3 sudo passwd ansible (Use the same password as cloud_user for simplicity)
 7.4 sudo visudo
 Add this line at the end of the file:
 ansible       ALL=(ALL)       NOPASSWD: ALL
