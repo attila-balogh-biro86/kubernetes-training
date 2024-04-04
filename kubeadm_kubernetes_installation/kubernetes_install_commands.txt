@@ -68,7 +68,7 @@ Installing Kubernetes with containerd as runtime
 Initialize the Cluster
 
 1. Initialize the Kubernetes cluster on the control plane node using kubeadm:
-    sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes-version 1.27.0 
+    sudo kubeadm init --pod-network-cidr 10.244.0.0/16 --kubernetes-version 1.27.0 
 
 2. Set kubectl access:
     mkdir -p $HOME/.kube
