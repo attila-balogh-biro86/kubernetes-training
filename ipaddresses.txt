@@ -1,18 +1,2 @@
-Achim.Daniel - 20.108.2.124
-Adrien.BUFFARD - 51.142.106.246
-Alexis.VADE - 40.120.52.1
-Aniello.ROVEZZI - 20.0.220.118
-Antoine.DELAUNAY - 20.90.249.53
-Aristeidis.DALAKOURAS - 51.142.104.137
-CHATZIDAKIS.Stylianos - 20.90.190.51
-Gherardo.ALBANO - 20.117.163.102
-GRIGORE.Dan-Ionut - 20.108.182.98
-LYAZID.Hadj - 4.234.153.140
-Michael.BERNARDOFF - 51.142.120.214
-PAUNOV.Yavor - 20.68.148.236
-STANEI.Daniel - 20.108.5.47
-SZALAI.Robert - 20.108.54.22
-Yannick.DURAND - 20.117.72.35
-
-
-USERNAME/PASS on EVERY NODE: cloud_user/Clouduser2023
+Windows: administrator/Linux2024%
+Linux: root/Linux2024%
