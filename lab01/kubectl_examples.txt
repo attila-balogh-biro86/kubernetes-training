@@ -28,8 +28,8 @@ kubectl get pods -o wide
 # Create subcommand
 kubectl create --help
 
-kubectl create namespaces myspace --dry-run -o yaml
-kubectl create namespaces myspace --dry-run -o yaml > myspace.yaml
+kubectl create namespace myspace --dry-run=client -o yaml
+kubectl create namespace myspace --dry-run=client -o yaml > myspace.yaml
 
 # Run a POD (NGINX)
 kubectl run nginx --image=nginx --port=80 --expose 
