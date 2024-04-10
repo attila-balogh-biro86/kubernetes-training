@@ -10,7 +10,7 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     volumeAttributes:
-      source: //4.234.121.184/sambashare
+      source: //20.86.4.179/sambashare
     volumeHandle: cifs-storage-samba-share
     nodeStageSecretRef:
       name: smbcreds
