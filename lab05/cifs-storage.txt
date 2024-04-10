@@ -2,10 +2,10 @@
 # Ref.: https://github.com/kubernetes-csi/csi-driver-smb
 
 # CIFS server data:
-# Server name: 4.234.121.184
+# Server name: 20.86.4.179
 # Share name: sambashare
 # Username: cloud_user
-# Password: Clouduser2023
+# Password: admin123
 
 
 Install HELM:
