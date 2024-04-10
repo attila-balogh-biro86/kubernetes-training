@@ -88,7 +88,8 @@ Initialize the Cluster
 Install the Calico Network Add-On
 
 1. On the control plane node, install Calico Networking:
-    kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml 
+    curl https://raw.githubusercontent.com/projectcalico/calico/v3.27.3/manifests/calico.yaml -O
+    kubectl apply -f calico.yaml
 
 2. Check the status of the control plane node:
     kubectl get nodes 
