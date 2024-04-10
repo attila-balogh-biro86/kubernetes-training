@@ -1,6 +1,8 @@
 # Install Metrics server
 # Ref.: https://github.com/kubernetes-sigs/metrics-server
 
+https://discuss.kubernetes.io/t/apiserver-liveness-and-readiness-probes-fail-randomly-with-code-500/20719/2
+
 
 # Download manifest file:
 wget -O metrics-server.yaml https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
