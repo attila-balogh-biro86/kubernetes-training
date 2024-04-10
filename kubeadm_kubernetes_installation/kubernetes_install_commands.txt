@@ -76,6 +76,17 @@ Initialize the Cluster
 1. Initialize the Kubernetes cluster on the control plane node using kubeadm:
     sudo kubeadm init --pod-network-cidr 10.244.0.0/16 --kubernetes-version 1.29.0 
 
+CONFIG:
+
+# kubeadm-config.yaml
+kind: ClusterConfiguration
+apiVersion: kubeadm.k8s.io/v1beta3
+kubernetesVersion: v1.21.0
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd
+
 2. Set kubectl access:
     mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
