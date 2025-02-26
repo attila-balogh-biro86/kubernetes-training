@@ -1,0 +1,115 @@
+
+1. Enable addon:
+
+# az aks approuting enable
+az aks approuting enable --resource-group <ResourceGroupName> --name <ClusterName>
+
+# az aks enable-addons
+az aks enable-addons --resource-group <ResourceGroupName> \
+--name <ClusterName> --addons http_application_routing
+
+
+---------------------------
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-helloworld-one  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-helloworld-one
+  template:
+    metadata:
+      labels:
+        app: aks-helloworld-one
+    spec:
+      containers:
+      - name: aks-helloworld-one
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Welcome to Azure Kubernetes Service (AKS)"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-helloworld-one  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: aks-helloworld-one
+    
+--------------------------------------------------------------------------------
+
+2. Create an ingress resource
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aks-helloworld
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+  - http:
+      paths:
+      - path: /hello-world(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: aks-helloworld-one
+            port:
+              number: 80
+        
+        
+-------------------------------
+
+
+kubectl apply -f ingress.yaml
+
+kubectl get ingress
+
+NAME             CLASS                                HOSTS               ADDRESS       PORTS     AGE
+aks-helloworld   webapprouting.kubernetes.azure.com   app.abaloghbiro.cloud   20.51.92.19   80, 443   4m
+
+
+--------------------------------
+
+3. Install an additional public ingress controller
+
+apiVersion: approuting.kubernetes.azure.com/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: nginx-public
+spec:
+  ingressClassName: nginx-public
+  controllerNamePrefix: nginx-public
+
+----------------------------------------
+
+
+4. Create an internal ingress controller
+
+apiVersion: approuting.kubernetes.azure.com/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: nginx-internal
+spec:
+  ingressClassName: nginx-internal
+  controllerNamePrefix: nginx-internal
+  loadBalancerAnnotations: 
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    
+--------------------------------------------
+
+
